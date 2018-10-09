@@ -1,4 +1,3 @@
-const glob = require('glob');
 const fs = require('fs');
 
 module.exports = class BasicController {
@@ -38,22 +37,27 @@ module.exports = class BasicController {
     save(data, res) {
         const all = this.getAll();
         const allData = all.data;
-        const id = data.id;
+        let id = parseInt(data.id);
+        if(isNaN(id)) {
+            id = 0;
+        }
         let dataModified = false;
         if(id) {
             for (let i = 0; i < allData.length; i++) {
                 const comparable = allData[i];
-                if(comparable.id === data.id) {
+                if(comparable.id === id) {
                     allData[i] = data;
                     dataModified = true;
-                    break;
-                } else if(comparable.id > data.id) {
+                } else if(comparable.id > id) {
                     if(i === 0) {
                         allData.unshift(data);
                     } else {
                         allData.splice(i - 1, 0, data);
                     }
                     dataModified = true;
+                }
+                if(dataModified) {
+                    break;
                 }
             }
         }
