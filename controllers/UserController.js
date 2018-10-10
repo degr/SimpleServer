@@ -5,7 +5,12 @@ module.exports = class UserController extends BasicController {
         return "users";
     }
     save(data, response) {
-        if(data.id) {
+        let id = parseInt(data.id);
+        if(isNaN(id)) {
+            id = 0;
+        }
+        if(id) {
+            data.id = id;
             const list = this.getAll();
             const old = this.applyFilter(list.data, {id: data.id});
             if(old.length === 1) {

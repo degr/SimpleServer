@@ -45,7 +45,7 @@ module.exports = class BasicController {
         if(id) {
             for (let i = 0; i < allData.length; i++) {
                 const comparable = allData[i];
-                if(comparable.id === id) {
+                if(parseInt(comparable.id) === id) {
                     allData[i] = data;
                     dataModified = true;
                 } else if(comparable.id > id) {
@@ -122,10 +122,13 @@ module.exports = class BasicController {
     }
 
     getAll() {
-        if(fs.existsSync(this.prepareDbPath())) {
-            return JSON.parse(fs.readFileSync(this.prepareDbPath(), "utf8"));
-        } else {
-            return {lastId: 0, data: []};
+        try {
+            if (fs.existsSync(this.prepareDbPath())) {
+                return JSON.parse(fs.readFileSync(this.prepareDbPath(), "utf8"));
+            }
+        } catch (e) {
+            console.log("error with db file read" + e)
         }
+        return {lastId: 0, data: []};
     }
 };
