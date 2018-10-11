@@ -1,7 +1,7 @@
 const UserController = require("./controllers/UserController.js");
 const express = require('express');
 const app = express();
-const port = 80;
+const port = 8066;
 
 app.use('/assets', express.static(__dirname + '/assets'));
 app.use(express.json());
