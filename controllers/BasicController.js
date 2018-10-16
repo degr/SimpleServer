@@ -84,7 +84,7 @@ module.exports = class BasicController {
         let status = 'not_found';
         for(let i = 0; i < data.length; i++) {
             if(data[i].id == id) {
-                all.splice(i, 1);
+                data.splice(i, 1);
                 fs.writeFileSync(this.prepareDbPath(), JSON.stringify(all));
                 status = 'ok';
             }

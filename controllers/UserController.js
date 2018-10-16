@@ -1,9 +1,22 @@
 const BasicController = require("./BasicController");
+const AuthorisationFilter = require("./AuthorisationFilter")
 
 module.exports = class UserController extends BasicController {
     getDirectory() {
         return "users";
     }
+
+    logIn(user, response) {
+        const list = this.getAll();
+        const filtered = this.applyFilter(list.data, {email: user.email, password: user.password});
+        const authFilter = new AuthorisationFilter();
+        if(filtered.length > 0) {
+            this.sendResponse(authFilter.writeToken(filtered[0]), response);
+        } else {
+            authFilter.notAuthorised(response);
+        }
+    }
+
     save(data, response) {
         let id = parseInt(data.id);
         if(isNaN(id)) {
